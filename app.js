@@ -34,7 +34,7 @@ app.get('/monitor', function(req, res) {
   res.sendFile('maps/monitor-map.html', { root: __dirname });
 });
 
-var server = app.listen(5000, function () {
+var server = app.listen(8080, function () {
   var host = server.address().address;
   var port = server.address().port;
 
