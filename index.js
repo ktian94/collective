@@ -1,4 +1,4 @@
-var __dirname = 'C:/Users/Kevin/Documents/MapsProject';
+var __dirname = 'C:/Users/Kevin/Documents/collective';
 
 var express = require('express');
 var faye = require('faye');
@@ -25,7 +25,7 @@ app.post('/', function (req, res) {
 });
 
 app.get('/monitor', function(req, res) {
-  res.sendFile('monitor-map.html', { root: __dirname });
+  res.sendFile('maps/monitor-map.html', { root: __dirname });
 });
 
 var server = app.listen(3000, function () {
