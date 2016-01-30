@@ -1,5 +1,4 @@
-var __dirname = 'C:/Users/Kevin/Documents/collective';
-
+var Twitter = require('twitter');
 var express = require('express');
 var faye = require('faye');
 var bodyParser = require('body-parser');
@@ -8,8 +7,15 @@ var app = express();
 
 var faye_server = new faye.NodeAdapter({mount: '/faye', timeout: 120});
 
+var client = new Twitter({
+  consumer_key: 'VE3o7sCIGjlmKkuW5G4x5cpeG',
+  consumer_secret: 'p1VavIQLfEopJwZhLRIGcLV4hy2lwtvxtaNZeTuRaW89ij69zn',
+  access_token_key: '3230955631-hRSmgJZ75p3bWYl27Dvx09ZLPsEhOSVhtkdMzAP',
+  access_token_secret: 'Z4p1Nbr6uH6NK7vWQAm61U0nRV3Ev7oby0egpW1dGJlT9' 
+});
+
 app.get('/', function (req, res) {
-  res.sendFile('request-help.html', { root: __dirname });
+  res.sendFile('request-help.html');
 });
 
 app.post('/', function (req, res) {
@@ -21,11 +27,11 @@ app.post('/', function (req, res) {
         lng: obj.lng
       });
     });
-  res.sendFile('request-received.html', { root: __dirname });
+  res.sendFile('request-received.html');
 });
 
 app.get('/monitor', function(req, res) {
-  res.sendFile('maps/monitor-map.html', { root: __dirname });
+  res.sendFile('maps/monitor-map.html');
 });
 
 var server = app.listen(3000, function () {
@@ -36,3 +42,14 @@ var server = app.listen(3000, function () {
 });
 
 faye_server.attach(server);
+
+client.stream('statuses/filter', {track: 'blacklivesmatter'}, function(stream) {
+  stream.on('data', function(tweet) {
+    console.log(tweet.text);
+  });
+
+  stream.on('error', function(error) {
+    throw error;
+  });
+
+});
