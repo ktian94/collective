@@ -34,6 +34,8 @@
             SOS
         </button>
     </div>
+    <!--socket.io-->	
+    <script src="/socket.io/socket.io.js"></script>
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
@@ -66,6 +68,12 @@
           // Browser doesn't support Geolocation
           alert("Browser doesn't support geolocation.");
         }
+
+	var socket = io.connect('http://52.33.11.172/');
+  	socket.emit('feedMe', {phrase:'phrase'});
+	socket.on('newTweet', function (data) {
+    		console.log(data);
+  	});
 
     </script>
 
