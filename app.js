@@ -1,42 +1,23 @@
 var Twitter = require('twitter');
-var faye = require('faye');
 var express = require('express'),  http = require('http');
 var bodyParser = require('body-parser');
 var queryString = require('querystring');
 var app = express();
 var server = http.createServer(app);
 
-var hashTagMap = {};
 var twitterClientMap = {};
 
 app.get('/', function (req, res) {
   res.sendFile('request-help.html', { root: __dirname });
 });
 
-app.post('/', function (req, res) {
-  req.on('data', function(chunk) {
-    var obj = JSON.parse(chunk);
-     faye_server.getClient().publish('/pin', {
-        pageName: 'monitor-map',
-        lat: obj.lat,
-        lng: obj.lng
-      });
-    });
-  res.sendFile('request-received.html', { root: __dirname });
-});
+app.get('/:hashtag', function(req, res) {
 
-//app.get('/user/:id', function(req, res) {
-//  res.send('user ' + req.params.id);
-//});
-//
-
-app.get('/:id', function(req, res) {
-
-  var hashTag = hashTagMap[req.params.id];
-  if (!(hashTag in twitterClientMap)) {
-	makeStream(hashTag);
+  var hashtag = req.params.hashtag;
+  if (!(hashtag in twitterClientMap)) {
+	 makeStream(hashtag);
   }
-  res.sendFile('maps/monitor-map.html', { root: __dirname, phrase:hashTag });
+  res.sendFile('maps/monitor-map.html', { root: __dirname });
 
 });
 
@@ -61,7 +42,8 @@ function makeStream(phrase){
 	client.stream('statuses/filter', {track: phrase}, function(stream) {
   		stream.on('data', function(tweet) {
   		
-			io.sockets.emit(phrase, tweet);   				
+       console.log(tweet.text);
+			 io.sockets.emit(phrase, tweet);   				
      			
   		});
 
@@ -71,15 +53,12 @@ function makeStream(phrase){
 
 	});
 
-
 	twitterClientMap[phrase] = client;
 
 }
 
-//var io = require('socket.io')(server);
-
-//io.on('connection', function(socket){
-  //socket.emit('news', {hello:'world'});
- 
-//});
-
+function removeStream(phrase) {
+  if (phrase in twitterClientMap) {
+    delete twitterClientMap[phrase];
+  } 
+}

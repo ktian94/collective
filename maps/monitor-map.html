@@ -7,6 +7,19 @@
       #timeline {position: fixed; height: 100%; width: 25%; top: 0; right: 0; overflow-y: scroll;}
     </style>
     <script>
+      function getCookie(cname) {
+          var name = cname + "=";
+          var ca = document.cookie.split(';');
+          for(var i=0; i<ca.length; i++) {
+              var c = ca[i];
+              while (c.charAt(0)==' ') c = c.substring(1);
+              if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+          }
+          return "";
+      }
+
+      var hashtag = getCookie("hashtag");
+
       window.twttr = (function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0],
           t = window.twttr || {};
@@ -27,11 +40,11 @@
   <body>
     <div id="map"></div>
     <div id="timeline">
-      <div id="title" style="padding-left: 2%;"><h2>#BLACKLIVESMATTER</h2></div>
+      <div id="title" style="padding-left: 2%;"></div>
       <div id="feed"></div>
     </div>
     <script type="text/javascript" 
-        src="http://localhost:8080/faye/client.js">
+        src="/socket.io/socket.io.js">
         </script>
     
     <script type="text/javascript">
@@ -76,11 +89,12 @@
       // addMarkerToMap(klausLatLng['lat'], klausLatLng['lng']);
 
       //create faye client
-      var faye_client = new Faye.Client('http://localhost:8080/faye');
+      var socket = io.connect('http://52.33.11.172:8080');
 
-      var faye_message_subscription = faye_client.subscribe('/pin', function(message)
+      socket.on(hashtag, function(message)
       {   
-          addMarkerToMap(message.lat, message.lng);
+        console.log(message);
+          //addMarkerToMap(message.lat, message.lng);
       });
 
       function calculateAndDisplayRoute(directionsService, directionsDisplay, directionsDestination) {
@@ -122,6 +136,11 @@
                               'Error: Your browser doesn\'t support geolocation.');
       }
     }
+
+    var header = document.createElement("h2");
+    var node = document.createTextNode("#" + hashtag);
+    header.appendChild(node);
+    document.getElementById('title').appendChild(header);
 
     twttr.ready(function (twttr) {
       for (i = 0; i < 10; i++) { 
