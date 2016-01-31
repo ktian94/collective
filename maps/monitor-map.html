@@ -55,15 +55,6 @@
 
       var markerCount = 0;
 
-      var contentString = '<div id="content">'+
-      '<div id="siteNotice">'+
-      '</div>'+
-      '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
-      '<div id="bodyContent">'+
-      '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large </p>'+
-      '</div>'+
-      '</div>';
-
       function addMarkerToMap(lat, long, text){ 
         var infowindow = new google.maps.InfoWindow({
 		content: text
@@ -78,6 +69,9 @@
 	marker.addListener('click', function() {
     		infowindow.open(map, marker);
   	}); 
+  marker.addListener('dblclick', function() {
+    marker.setMap(null);
+  });
         //Gives each marker an Id for the on click 
         markerCount++; 
         //Creates the event listener for clicking the marker 
