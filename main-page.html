@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SOS</title>
+    <title>Collective</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
@@ -17,7 +17,7 @@
     <!-- Custom Fonts -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
-    <link href="./css/main-page.css" rel="stylesheet" type="text/css">
+    <link href="./public/main-page.css" rel="stylesheet" type="text/css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -49,7 +49,7 @@
                 </div>
                 <div class="slide-footer">
                     <span class="pull-right buttons">
-                        <button class="btn btn-sm btn-default"><i class="fa fa-fw fa-eye"></i> Show</button>
+                        <a href="./blacklivesmatter" class="btn btn-sm btn-default"><i class="fa fa-fw fa-eye"></i> Show</a>
                     </span>
                 </div>
             </div>
@@ -57,7 +57,7 @@
         <div class="row carousel-row">
             <div class="col-xs-8 col-xs-offset-2 slide-row">
                 <div class="slide-content">
-                    <h4><span class="hashtag">#</span>foo</h4>
+                    <h4><span class="hashtag">#</span>votefordonaldtrump</h4>
                     <p>
                         Lorem ipsum dolor sit amet, consetetur sadipscing elitr, 
                         sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat
@@ -65,7 +65,7 @@
                 </div>
                 <div class="slide-footer">
                     <span class="pull-right buttons">
-                        <button class="btn btn-sm btn-default"><i class="fa fa-fw fa-eye"></i> Show</button>
+                        <a href="./votefordonaldtrump" class="btn btn-sm btn-default"><i class="fa fa-fw fa-eye"></i> Show</a>
                     </span>
                 </div>
             </div>
@@ -73,7 +73,7 @@
         <div class="row carousel-row">
             <div class="col-xs-8 col-xs-offset-2 slide-row">
                 <div class="slide-content">
-                    <h4><span class="hashtag">#</span>bar</h4>
+                    <h4><span class="hashtag">#</span>freethenipple</h4>
                     <p>
                         Lorem ipsum dolor sit amet, consetetur sadipscing elitr, 
                         sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat
@@ -81,23 +81,43 @@
                 </div>
                 <div class="slide-footer">
                     <span class="pull-right buttons">
-                        <button class="btn btn-sm btn-default"><i class="fa fa-fw fa-eye"></i> Show</button>
+                        <a href="./freethenipple" class="btn btn-sm btn-default"><i class="fa fa-fw fa-eye"></i> Show</a>
                     </span>
                 </div>
             </div>
         </div>
+        <div class="row carousel-row">
+            <div class="col-xs-8 col-xs-offset-2 slide-row">
+                <div class="slide-content">
+                    <h4><span class="hashtag">##########</span></h4>
+                    <div>
+                        <p for="hash tag">New movement's hashtag: </p>
+                        <input type="text" id="hashTag" name="hashTag"></input>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span class="pull-right buttons">
+                        <a id="submitting" class="btn btn-sm btn-default"><i class="fa fa-fw fa-eye"></i> Show</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-8 col-xs-offset-2">
+                <h4 style="color:white"> they don't want you to protest</h1>
+            </div>
+        </div>
     </div>
-
-   <form id="loginformA" action="register" method="post">
-    <div>
-        <label for="hash tag">hash tag: </label>
-        <input type="text" id="hashTag" name="hashTag"></input>
-    </div>
-   <input type="submit" value="Submit"></input>
-   </form>
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+    <script>
+        $( "#submitting" ).click(function() {
+          location = window.location.href + $("#hashTag").val();
+
+        });
+    </script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>

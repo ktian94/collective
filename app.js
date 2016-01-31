@@ -7,6 +7,8 @@ var server = http.createServer(app);
 
 var twitterClientMap = {};
 
+app.use(express.static(__dirname + '/'));
+
 app.get('/', function (req, res) {
   res.sendFile('main-page.html', { root: __dirname });
 });
