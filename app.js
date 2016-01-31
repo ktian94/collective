@@ -1,12 +1,10 @@
 var Twitter = require('twitter');
-var faye = require('faye');
 var express = require('express'),  http = require('http');
 var bodyParser = require('body-parser');
 var queryString = require('querystring');
 var app = express();
 var server = http.createServer(app);
 
-var hashTagMap = {};
 var twitterClientMap = {};
 
 app.get('/', function (req, res) {
@@ -25,14 +23,13 @@ app.post('/', function (req, res) {
   res.sendFile('request-received.html', { root: __dirname });
 });
 
+app.get('/:hashtag', function(req, res) {
 
-app.get('/:id', function(req, res) {
-
-  var hashTag = hashTagMap[req.params.id];
-  if (!(hashTag in twitterClientMap)) {
-	makeStream(hashTag);
+  var hashtag = req.params.hashtag;
+  if (!(hashtag in twitterClientMap)) {
+	 makeStream(hashtag);
   }
-  res.sendFile('maps/monitor-map.html', { root: __dirname, phrase:hashTag });
+  res.sendFile('maps/monitor-map.html', { root: __dirname });
 
 });
 
@@ -46,7 +43,8 @@ var server = app.listen(8080, function () {
 var io = require('socket.io')(server);
 
 function makeStream(phrase){
-
+	
+	console.log(phrase);
 	var client = new Twitter({
   	consumer_key: 'VE3o7sCIGjlmKkuW5G4x5cpeG',
   	consumer_secret: 'p1VavIQLfEopJwZhLRIGcLV4hy2lwtvxtaNZeTuRaW89ij69zn',
@@ -57,7 +55,8 @@ function makeStream(phrase){
 	client.stream('statuses/filter', {track: phrase}, function(stream) {
   		stream.on('data', function(tweet) {
   		
-			io.sockets.emit(phrase, tweet);   				
+       console.log(tweet);
+			 io.sockets.emit(phrase, tweet);   				
      			
   		});
 
@@ -67,15 +66,12 @@ function makeStream(phrase){
 
 	});
 
-
 	twitterClientMap[phrase] = client;
 
 }
 
-//var io = require('socket.io')(server);
-
-//io.on('connection', function(socket){
-  //socket.emit('news', {hello:'world'});
- 
-//});
-
+function removeStream(phrase) {
+  if (phrase in twitterClientMap) {
+    delete twitterClientMap[phrase];
+  } 
+}
