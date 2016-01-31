@@ -8,7 +8,7 @@ var server = http.createServer(app);
 var twitterClientMap = {};
 
 app.get('/', function (req, res) {
-  res.sendFile('request-help.html', { root: __dirname });
+  res.sendFile('main-page.html', { root: __dirname });
 });
 
 app.get('/:hashtag', function(req, res) {
