@@ -7,18 +7,9 @@
       #timeline {position: fixed; height: 100%; width: 25%; top: 0; right: 0; overflow-y: scroll;}
     </style>
     <script>
-      function getCookie(cname) {
-          var name = cname + "=";
-          var ca = document.cookie.split(';');
-          for(var i=0; i<ca.length; i++) {
-              var c = ca[i];
-              while (c.charAt(0)==' ') c = c.substring(1);
-              if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
-          }
-          return "";
-      }
 
-      var hashtag = getCookie("hashtag").toLowerCase();
+      var urlParts = window.location.href.split('/');
+      var hashtag = urlParts[urlParts.length - 1];
 
       window.twttr = (function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0],
@@ -64,25 +55,41 @@
 
       var markerCount = 0;
 
-      function addMarkerToMap(lat, long){ 
-        var infowindow = new google.maps.InfoWindow(); 
+      var contentString = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
+      '<div id="bodyContent">'+
+      '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large </p>'+
+      '</div>'+
+      '</div>';
+
+      function addMarkerToMap(lat, long, text){ 
+        var infowindow = new google.maps.InfoWindow({
+		content: text
+	}); 
         var myLatLng = new google.maps.LatLng(lat, long); 
         var marker = new google.maps.Marker({ 
           position: myLatLng, 
           map: map, 
-          title: 'Click to get directions',
-          animation: google.maps.Animation.DROP, }); 
+          title: 'Click to get tweet text.',
+          animation: google.maps.Animation.DROP
+	 });
+	marker.addListener('click', function() {
+    		infowindow.open(map, marker);
+  	}); 
         //Gives each marker an Id for the on click 
         markerCount++; 
         //Creates the event listener for clicking the marker 
         //and places the marker on the map 
-        google.maps.event.addListener(marker, 'click', (function(marker, markerCount) { 
-          return function() { 
-            map.setZoom(5);
-            map.setCenter(marker.getPosition());
-            calculateAndDisplayRoute(directionsService, directionsDisplay, marker.position);
-           }
-        })(marker, markerCount));
+        //google.maps.event.addListener(marker, 'click', (function(marker, markerCount) { 
+          //return function() { 
+            // map.setZoom(5);
+            //  map.setCenter(marker.getPosition());
+            // calculateAndDisplayRoute(directionsService, directionsDisplay, marker.position);
+	
+	 // }
+        //})(marker, markerCount));
       }
 
       var socket = io.connect('http://52.33.11.172');
@@ -100,12 +107,13 @@
 		var tmpLat = message['coordinates']['coordinates'][1];
 		var tmpLng = message['coordinates']['coordinates'][0];
 		console.log(message['coordinates']);
-		addMarkerToMap(tmpLat, tmpLng);
+		addMarkerToMap(tmpLat, tmpLng, message['text']);
 	} else {
 		var tmpLat = Math.random() * 15 + 30;
-		var tmpLng = Math.random() * -30 + -70;
-		addMarkerToMap(tmpLat, tmpLng);
+		var tmpLng = Math.random() * -50 + -70;
+		addMarkerToMap(tmpLat, tmpLng, message['text']);
 	}
+	
       });
 
       function calculateAndDisplayRoute(directionsService, directionsDisplay, directionsDestination) {
