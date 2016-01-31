@@ -81,7 +81,7 @@ function getLast50(phrase){
   console.log('hey' + phrase);
   client.get('search/tweets', {q: phrase}, function(error, tweets, response){
     for (i = 0; i < 50; i++) { 
-      io.sockets.emit(phrase,tweets[i]);
+      io.sockets.emit(phrase, tweets[i]);
       // console.log(tweets[i]);
     }
   });
