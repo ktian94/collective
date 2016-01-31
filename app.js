@@ -10,7 +10,7 @@ var hashTagMap = {};
 var twitterClientMap = {};
 
 app.get('/', function (req, res) {
-  res.sendFile('request-help.html', { root: __dirname });
+  res.sendFile('main-page.html', { root: __dirname });
 });
 
 app.post('/', function (req, res) {
