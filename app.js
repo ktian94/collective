@@ -30,7 +30,7 @@ app.get('/:hashtag', function(req, res) {
 	 makeStream(hashtag);
   }
   res.sendFile('maps/monitor-map.html', { root: __dirname });
-
+  getLast50(hashtag);
 });
 
 var server = app.listen(8080, function () {
@@ -67,6 +67,27 @@ function makeStream(phrase){
 	});
 
 	twitterClientMap[phrase] = client;
+
+}
+
+function getLast50(phrase){
+
+  var client = new Twitter({
+    consumer_key: 'VE3o7sCIGjlmKkuW5G4x5cpeG',
+    consumer_secret: 'p1VavIQLfEopJwZhLRIGcLV4hy2lwtvxtaNZeTuRaW89ij69zn',
+    access_token_key: '3230955631-hRSmgJZ75p3bWYl27Dvx09ZLPsEhOSVhtkdMzAP',
+    access_token_secret: 'Z4p1Nbr6uH6NK7vWQAm61U0nRV3Ev7oby0egpW1dGJlT9'
+  });
+  console.log('hey' + phrase);
+  client.get('search/tweets', {q: phrase}, function(error, tweets, response){
+    for (i = 0; i < 50; i++) { 
+      io.sockets.emit(phrase,tweets[i]);
+      // console.log(tweets[i]);
+    }
+  });
+
+
+  twitterClientMap[phrase] = client;
 
 }
 
