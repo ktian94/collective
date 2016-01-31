@@ -28,11 +28,14 @@ app.post('/', function (req, res) {
 app.get('/:hashtag', function(req, res) {
 
   var hashtag = req.params.hashtag;
+if (hashtag != 'favicon.ico'){  
+
   if (!(hashtag in twitterClientMap)) {
 	 makeStream(hashtag);
   }
   res.sendFile('maps/monitor-map.html', { root: __dirname });
-  getLast50(hashtag);
+  //getLast50(hashtag);
+}
 });
 
 var server = app.listen(8080, function () {
@@ -63,7 +66,7 @@ function makeStream(phrase){
   		});
 
   		stream.on('error', function(error) {
-    			throw error;
+    			console.log(error);
   		});
 
 	});
